@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mock SDK Browser Test</title>
+    <script src="../../../../mock-sdk/1-0-0/dist/airkit.umd.min.js"></script>
+</head>
+<body>
+<h1>Test Mock SDK in Browser</h1>
+<button id="login">Login</button>
+<button id="logout" disabled>Logout</button>
+<div id="output"></div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const service = new AirService.AirService({ partnerId: "test-partner" });
+
+        document.getElementById("login").addEventListener("click", async () => {
+            const user = await service.login({ authToken: "mock-jwt-token" });
+            document.getElementById("output").innerText = `Logged in as: ${user.partnerId}`;
+            document.getElementById("login").disabled = true;
+            document.getElementById("logout").disabled = false;
+        });
+
+        document.getElementById("logout").addEventListener("click", async () => {
+            await service.logout();
+            document.getElementById("output").innerText = "Logged out";
+            document.getElementById("login").disabled = false;
+            document.getElementById("logout").disabled = true;
+        });
+    });
+</script>
+</body>
+</html>
